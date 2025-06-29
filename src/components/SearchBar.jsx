@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Adicionando importação do useEffect
 import PropTypes from 'prop-types';
 import useDebounce from '../hooks/useDebounce';
 

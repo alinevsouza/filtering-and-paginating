@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import DoctorList from './components/DoctorList';
@@ -13,17 +13,13 @@ function App() {
     setDoctors(doctorService.searchDoctors());
   }, []);
 
-  /* useMemo --> Para garantir que a página só seja recalculada quando houver alguma
-   mudança em doctors ou em currentPage. */
   const currentDoctors = useMemo(() => {
     return doctorService.getPaginatedDoctors(doctors, currentPage, 10)
   }, [doctors, currentPage]);
 
-  /* useCallback --> Para evitar atualização de estados desnecessárias em cascata, 
-   tratando assim o problema com excessivas renderizações na interface. */
-  const handleSearch = useCallback((query) => {
+  const handleSearch = (query) => {
     setDoctors(doctorService.searchDoctors(query));
-  }, []);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
