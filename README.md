@@ -1,4 +1,4 @@
-# Filtering and Paginanting Challenge
+# Filtering and Paginating Challenge
 
 This React application is a knowledge acquisition challenge. The application allows users to search for doctors from a local database. Users can search by doctor name and navigate through the results using an intuitive paging system.
 
