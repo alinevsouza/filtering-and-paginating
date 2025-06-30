@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import DoctorList from './components/DoctorList';
@@ -19,11 +19,9 @@ function App() {
     return doctorService.getPaginatedDoctors(doctors, currentPage, 10)
   }, [doctors, currentPage]);
 
-  /* useCallback --> Para evitar atualização de estados desnecessárias em cascata, 
-   tratando assim o problema com excessivas renderizações na interface. */
-  const handleSearch = useCallback((query) => {
+  const handleSearch = (query) => {
     setDoctors(doctorService.searchDoctors(query));
-  }, []);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

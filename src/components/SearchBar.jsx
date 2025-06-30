@@ -6,13 +6,14 @@ function SearchBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
+  useEffect(() => {
+    onSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
+
+
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  useEffect(() => {
-    onSearch(debouncedSearchTerm);
-  }, [debouncedSearchTerm, onSearch]);
 
   return (
     <div className="search-bar">
