@@ -1,37 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Example } from './components/Example/Example'
+import { useState, useEffect, useMemo } from 'react';
+import './App.css';
+import SearchBar from './components/SearchBar';
+import DoctorList from './components/DoctorList';
+import Pagination from './components/Pagination';
+import doctorService from './services/doctorService';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [doctors, setDoctors] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setDoctors(doctorService.searchDoctors());
+  }, []);
+
+  /* useMemo --> Para garantir que a página só seja recalculada quando houver alguma
+   mudança em doctors ou em currentPage. */
+  const currentDoctors = useMemo(() => {
+    return doctorService.getPaginatedDoctors(doctors, currentPage, 10)
+  }, [doctors, currentPage]);
+
+  const handleSearch = (query) => {
+    setDoctors(doctorService.searchDoctors(query));
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  console.log('Render');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <Example />
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <h1>Busca de Médicos</h1>
+      <SearchBar onSearch={handleSearch} />
+      <DoctorList doctors={currentDoctors.doctors} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={currentDoctors.totalPages}
+        onPageChange={handlePageChange}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
